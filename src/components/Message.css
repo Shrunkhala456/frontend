@@ -1,0 +1,67 @@
+.message {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.message-content {
+  padding: 8px 12px;
+  border-radius: 8px;
+  max-width: 70%;
+  position: relative; /* For timestamp positioning */
+}
+
+.sent .message-content {
+  background-color: #dcf8c6; /* Greenish for sent */
+  align-self: flex-end;
+  margin-left: auto; /* Push to right */
+}
+
+.received .message-content {
+  background-color: #ffffff; /* White for received */
+  align-self: flex-start;
+  margin-right: auto; /* Push to left */
+}
+
+.message p {
+  margin: 0;
+  word-wrap: break-word;
+}
+
+.message-image {
+  max-width: 100%;
+  max-height: 200px; /* Limit image height */
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+
+.image-caption {
+  font-size: 0.8em;
+  color: #555;
+  margin-top: 0;
+  text-align: center;
+}
+
+.file-attachment {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.file-attachment a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.timestamp {
+  font-size: 0.7em;
+  color: #888;
+  margin-top: 5px;
+  display: block; /* Ensures it's on its own line */
+  text-align: right; /* Align to right within the message bubble */
+}
+
+.sent .timestamp {
+  color: #555; /* Darker timestamp for sent messages */
+}
