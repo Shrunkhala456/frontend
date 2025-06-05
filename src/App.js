@@ -1,56 +1,88 @@
+// client/src/App.js
 import React, { useState } from 'react';
-import ChatWindow from './components/ChatWindow';
-import MessageInput from './components/MessageInput';
-import FileUploader from './components/FileUploader';
-import './App.css'; // बेसिक CSS के लिए
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Login from './components/Login';
+import Register from './components/Register';
+import Chat from './components/Chat';
+import './App.css'; // For basic styling
 
 function App() {
-  const [messages, setMessages] = useState([]);
-  const [currentChatUser] = useState('Shrunkhala'); // मान लीजिए आप इस user से बात कर रहे हैं
+    const [currentUser, setCurrentUser] = useState(null); // { id, username }
 
-  const handleSendMessage = (text) => {
-    if (text.trim()) {
-      const newMessage = {
-        id: messages.length + 1,
-        sender: 'You', // आप भेज रहे हैं
-        text: text,
-        type: 'text',
-        timestamp: new Date().toLocaleTimeString(),
-      };
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-      // यहाँ आपको बैक-एंड को मैसेज भेजने का लॉजिक जोड़ना होगा (WebSockets)
-    }
-  };
-
-  const handleFileUpload = (file) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const newFileMessage = {
-        id: messages.length + 1,
-        sender: 'You',
-        text: file.name,
-        type: file.type.startsWith('image') ? 'image' : 'file', // इमेज या अन्य फ़ाइल
-        url: e.target.result, // या सर्वर से प्राप्त URL
-        timestamp: new Date().toLocaleTimeString(),
-      };
-      setMessages((prevMessages) => [...prevMessages, newFileMessage]);
-      // यहाँ आपको बैक-एंड पर फ़ाइल अपलोड करने का लॉजिक जोड़ना होगा
+    const handleLoginSuccess = (user) => {
+        setCurrentUser(user);
     };
-    reader.readAsDataURL(file); // फ़ाइल को डेटा URL के रूप में पढ़ें (केवल डेमो के लिए)
-  };
 
-  return (
-    <div className="app-container">
-      <div className="chat-header">
-        <h2>Chat with {currentChatUser}</h2>
-      </div>
-      <ChatWindow messages={messages} />
-      <div className="chat-footer">
-        <FileUploader onFileUpload={handleFileUpload} />
-        <MessageInput onSendMessage={handleSendMessage} />
-      </div>
-    </div>
-  );
+    const handleLogout = () => {
+        setCurrentUser(null);
+        // Clear any stored tokens/user info in localStorage if you implement it
+    };
+
+    return (
+        <Router>
+            <div className="App">
+                <nav>
+                    <ul>
+                        {!currentUser && (
+                            <>
+                                <li>
+                                    <Link to="/login">Login</Link>
+                                </li>
+                                <li>
+                                    <Link to="/register">Register</Link>
+                                </li>
+                            </>
+                        )}
+                        {currentUser && (
+                            <li>
+                                <button onClick={handleLogout}>Logout ({currentUser.username})</button>
+                            </li>
+                        )}
+                    </ul>
+                </nav>
+
+                <Routes>
+                    <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route
+                        path="/chat"
+                        element={
+                            currentUser ? (
+                                <Chat currentUser={currentUser} />
+                            ) : (
+                                <p>Please <Link to="/login">login</Link> to access the chat.</p>
+                            )
+                        }
+                    />
+                    <Route path="/" element={
+                        currentUser ? (
+                            <p>Welcome, {currentUser.username}! Go to <Link to="/chat">chat</Link>.</p>
+                        ) : (
+                            <p>Welcome! Please <Link to="/login">login</Link> or <Link to="/register">register</Link>.</p>
+                        )
+                    } />
+                </Routes>
+            </div>
+        </Router>
+    );
 }
 
 export default App;
+
+
+
+
+// import React from 'react';
+// import Chat from './components/Chat';
+// import './App.css';
+
+// function App() {
+//   return (
+//     <div className="App">
+//       <h2>📨 Simple Chat (No Login)</h2>
+//       <Chat />
+//     </div>
+//   );
+// }
+
+// export default App;
