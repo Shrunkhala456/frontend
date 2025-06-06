@@ -255,159 +255,79 @@
 
 
 
-// // import React, { useState, useEffect } from 'react';
-// // import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-// // function Chat() {
-// //   const [messages, setMessages] = useState([]);
-// //   const [inputMsg, setInputMsg] = useState('');
-// //   const [sender, setSender] = useState('Alice');
-// //   const [receiver, setReceiver] = useState('Bob');
-// //   const [file, setFile] = useState(null);
+function Chat() {
+  const [messages, setMessages] = useState([]);
+  const [inputMsg, setInputMsg] = useState('');
+  const [sender, setSender] = useState('Alice');
+  const [receiver, setReceiver] = useState('Bob');
+  const [file, setFile] = useState(null);
 
-// //   useEffect(() => {
-// //     fetchMessages();
-// //   }, []);
+  useEffect(() => {
+    fetchMessages();
+  }, []);
 
-// //   const fetchMessages = async () => {
-// //     const res = await axios.get('http://localhost:5000/messages');
-// //     setMessages(res.data);
-// //   };
+  const fetchMessages = async () => {
+    const res = await axios.get('http://localhost:5000/messages');
+    setMessages(res.data);
+  };
 
-// //   const handleSend = async () => {
-// //     const formData = new FormData();
-// //     formData.append('sender', sender);
-// //     formData.append('receiver', receiver);
-// //     formData.append('message', inputMsg);
-// //     if (file) formData.append('file', file);
+  const handleSend = async () => {
+    const formData = new FormData();
+    formData.append('sender', sender);
+    formData.append('receiver', receiver);
+    formData.append('message', inputMsg);
+    if (file) formData.append('file', file);
 
-// //     await axios.post('http://localhost:5000/send', formData);
-// //     setInputMsg('');
-// //     setFile(null);
-// //     fetchMessages();
-// //   };
-
-// //   return (
-// //     <div>
-// //       <div>
-// //         <label>Sender: </label>
-// //         <input value={sender} onChange={(e) => setSender(e.target.value)} />
-// //         <label>Receiver: </label>
-// //         <input value={receiver} onChange={(e) => setReceiver(e.target.value)} />
-// //       </div>
-
-// //       <div>
-// //         <input
-// //           type="text"
-// //           placeholder="Enter message"
-// //           value={inputMsg}
-// //           onChange={(e) => setInputMsg(e.target.value)}
-// //         />
-// //         <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-// //         <button onClick={handleSend}>Send</button>
-// //       </div>
-
-// //       <div style={{ marginTop: '20px' }}>
-// //         {messages.map((msg) => (
-// //           <div key={msg.id} style={{ border: '1px solid gray', padding: '5px', marginBottom: '5px' }}>
-// //             <strong>{msg.sender} ➡ {msg.receiver}</strong>: {msg.message}
-// //             {msg.file_path && (
-// //               <div>
-// //                 📎 <a href={`http://localhost:5000/uploads/${msg.file_path}`} target="_blank" rel="noreferrer">
-// //                   {msg.file_path}
-// //                 </a>
-// //               </div>
-// //             )}
-// //             <div style={{ fontSize: '0.8em', color: 'gray' }}>{msg.timestamp}</div>
-// //           </div>
-// //         ))}
-// //       </div>
-// //     </div>
-// //   );
-// // }
-
-// // export default Chat;
-
-
-
-
-// client/src/components/Chat.js
-// ... (imports and other state/hooks)
-import React, { useState, useRef} from 'react';
-
-function Chat({ currentUser }) {
-  const [selectedUser] = useState(null); // to track selected user
-  const [messages] = useState([]);           // to store messages
-  const messagesEndRef = useRef(null);                     // to scroll to bottom
-
-
-
-
-  // ... (existing state and useEffects)
-
-  // This part is crucial and seems correct in your provided code
-  // The API_BASE_URL should be 'http://localhost:5000'
-  const API_BASE_URL = 'http://localhost:5000'; // Make sure this matches your backend
-
-  // ... (other functions)
+    await axios.post('http://localhost:5000/send', formData);
+    setInputMsg('');
+    setFile(null);
+    fetchMessages();
+  };
 
   return (
-    <div className="chat-container">
-      {/* ... (users list sidebar) */}
+    <div>
+      <div>
+        <label>Sender: </label>
+        <input value={sender} onChange={(e) => setSender(e.target.value)} />
+        <label>Receiver: </label>
+        <input value={receiver} onChange={(e) => setReceiver(e.target.value)} />
+      </div>
 
-      <div className="chat-window">
-        {selectedUser ? (
-          <>
-            {/* ... (Chat with selected user header) */}
+      <div>
+        <input
+          type="text"
+          placeholder="Enter message"
+          value={inputMsg}
+          onChange={(e) => setInputMsg(e.target.value)}
+        />
+        <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+        <button onClick={handleSend}>Send</button>
+      </div>
 
-            <div className="messages-display">
-              {messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`message ${msg.sender_id === currentUser.id ? 'sent' : 'received'}`}
-                >
-                  <strong>
-                    {/* This line will now correctly show the sender's username */}
-                    {msg.sender_id === currentUser.id ? 'You' : msg.sender_username || 'Unknown User'}:
-                  </strong>
-
-                  {msg.message_type === 'text' && <p>{msg.content}</p>}
-
-                  {/* Ensure the src path is correct */}
-                  {msg.message_type === 'image' && msg.file_path && (
-                    <img
-                      src={`${API_BASE_URL}${msg.file_path}`} // Correct: e.g., http://localhost:5000/uploads/12345-image.jpg
-                      alt={msg.file_name || 'Uploaded Image'}
-                      style={{ maxWidth: '200px', maxHeight: '200px', objectFit: 'contain' }}
-                    />
-                  )}
-
-                  {/* Ensure the href path is correct */}
-                  {msg.message_type === 'document' && msg.file_path && (
-                    <a href={`${API_BASE_URL}${msg.file_path}`} target="_blank" rel="noopener noreferrer">
-                      📄 {msg.file_name || 'Uploaded Document'}
-                    </a>
-                  )}
-
-                  {/* Optional: Display text content (caption) for files if it exists */}
-                  {msg.content && msg.message_type !== 'text' && <p>{msg.content}</p>}
-
-                  <span className="timestamp">
-                    {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </span>
-                </div>
-              ))}
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* ... (message input form) */}
-          </>
-        ) : (
-          <p className="select-user-prompt">Select a user from the left to start chatting.</p>
-        )}
+      <div style={{ marginTop: '20px' }}>
+        {messages.map((msg) => (
+          <div key={msg.id} style={{ border: '1px solid gray', padding: '5px', marginBottom: '5px' }}>
+            <strong>{msg.sender} ➡ {msg.receiver}</strong>: {msg.message}
+            {msg.file_path && (
+              <div>
+                📎 <a href={`http://localhost:5000/uploads/${msg.file_path}`} target="_blank" rel="noreferrer">
+                  {msg.file_path}
+                </a>
+              </div>
+            )}
+            <div style={{ fontSize: '0.8em', color: 'gray' }}>{msg.timestamp}</div>
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
 export default Chat;
+
+
+
+
