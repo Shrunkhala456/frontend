@@ -1,88 +1,113 @@
-// client/src/App.js
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Login from './components/Login';
-import Register from './components/Register';
-import Chat from './components/Chat';
-import './App.css'; // For basic styling
+// // client/src/App.js
+// import React from 'react';
+// import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+// import { AuthProvider, useAuth } from './auth/AuthContext';
+// import LoginPage from './auth/LoginPage';
+// import RegisterPage from './auth/RegisterPage';
+// import ChatPage from './chat/ChatPage';
+// import styled from 'styled-components'; // For global styles
+
+// const GlobalStyle = styled.div`
+//     body {
+//         margin: 0;
+//         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+//         -webkit-font-smoothing: antialiased;
+//         -moz-osx-font-smoothing: grayscale;
+//         background-color: #f0f2f5;
+//     }
+//     #root {
+//         height: 100vh;
+//         display: flex;
+//         flex-direction: column;
+//     }
+// `;
+
+// // A private route component to protect authenticated routes
+// const PrivateRoute = ({ children }) => {
+//     const { user, loading } = useAuth();
+
+//     if (loading) {
+//         return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontSize: '1.5em' }}>Loading application...</div>;
+//     }
+
+//     return user ? children : <Navigate to="/login" />;
+// };
+
+// function App() {
+//     return (
+//         <GlobalStyle>
+//             <Router>
+//                 <AuthProvider>
+//                     <Routes>
+//                         <Route path="/login" element={<LoginPage />} />
+//                         <Route path="/register" element={<RegisterPage />} />
+//                         <Route
+//                             path="/chat"
+//                             element={
+//                                 <PrivateRoute>
+//                                     <ChatPage />
+//                                 </PrivateRoute>
+//                             }
+//                         />
+//                         {/* Redirect to chat if authenticated, otherwise to login */}
+//                         <Route
+//                             path="/"
+//                             element={
+//                                 <PrivateRoute>
+//                                     <Navigate to="/chat" />
+//                                 </PrivateRoute>
+//                             }
+//                         />
+//                         <Route path="" element={<Navigate to="/" />} /> {/ Catch-all for unknown routes */}
+//                     </Routes>
+//                 </AuthProvider>
+//             </Router>
+//         </GlobalStyle>
+//     );
+// }
+
+// export default App;
+
+
+
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './auth/AuthContext';
+import LoginPage from './auth/LoginPage';
+import RegisterPage from './auth/RegisterPage';
+import ChatPage from './chat/ChatPage';
+
+
+// A simple protected route wrapper
+const PrivateRoute = ({ children }) => {
+    const { user, loading } = useAuth();
+    if (loading) {
+        return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontSize: '1.5em' }}>Loading authentication...</div>; // Or a spinner
+    }
+    return user ? children : <Navigate to="/login" />;
+};
 
 function App() {
-    const [currentUser, setCurrentUser] = useState(null); // { id, username }
-
-    const handleLoginSuccess = (user) => {
-        setCurrentUser(user);
-    };
-
-    const handleLogout = () => {
-        setCurrentUser(null);
-        // Clear any stored tokens/user info in localStorage if you implement it
-    };
-
     return (
         <Router>
-            <div className="App">
-                <nav>
-                    <ul>
-                        {!currentUser && (
-                            <>
-                                <li>
-                                    <Link to="/login">Login</Link>
-                                </li>
-                                <li>
-                                    <Link to="/register">Register</Link>
-                                </li>
-                            </>
-                        )}
-                        {currentUser && (
-                            <li>
-                                <button onClick={handleLogout}>Logout ({currentUser.username})</button>
-                            </li>
-                        )}
-                    </ul>
-                </nav>
-
+            <AuthProvider>
                 <Routes>
-                    <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
-                    <Route path="/register" element={<Register />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
                     <Route
                         path="/chat"
                         element={
-                            currentUser ? (
-                                <Chat currentUser={currentUser} />
-                            ) : (
-                                <p>Please <Link to="/login">login</Link> to access the chat.</p>
-                            )
+                            <PrivateRoute>
+                                <ChatPage />
+                            </PrivateRoute>
                         }
                     />
-                    <Route path="/" element={
-                        currentUser ? (
-                            <p>Welcome, {currentUser.username}! Go to <Link to="/chat">chat</Link>.</p>
-                        ) : (
-                            <p>Welcome! Please <Link to="/login">login</Link> or <Link to="/register">register</Link>.</p>
-                        )
-                    } />
+                    {/* Redirect to login if no specific route matches, or set a default home */}
+                    <Route path="*" element={<Navigate to="/login" />} />
                 </Routes>
-            </div>
+            </AuthProvider>
         </Router>
     );
 }
 
 export default App;
-
-
-
-
-// import React from 'react';
-// import Chat from './components/Chat';
-// import './App.css';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <h2>📨 Simple Chat (No Login)</h2>
-//       <Chat />
-//     </div>
-//   );
-// }
-
-// export default App;
