@@ -194,12 +194,12 @@ const ChatPage = () => {
 
     // Axios instance with auth token
     const authAxios = axios.create({
-        baseURL: 'http://localhost:5000/api',
+        baseURL: 'my-backend-ea4o-5f26miis2-shrunkhala345s-projects.vercel.app',
         headers: {
             Authorization: `Bearer ${user?.token}`,
         },
     });
-
+//http://localhost:5000/api
     const getInitials = (name) => {
         if (!name) return '';
         return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
