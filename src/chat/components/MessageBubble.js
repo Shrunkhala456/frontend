@@ -91,7 +91,7 @@ const DownloadLink = styled.a`
 
 const MessageBubble = ({ message, isSender, currentUser }) => {
     const formattedTime = new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const FILE_BASE_URL = 'http://localhost:5000'; // Your backend server URL for static files
+    const FILE_BASE_URL = 'my-backend-ea4o-5f26miis2-shrunkhala345s-projects.vercel.app'; // Your backend server URL for static files
 
     const renderFileContent = () => {
         if (!message.file_url) return null;
