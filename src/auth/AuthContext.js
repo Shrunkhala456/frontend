@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const res = await axios.post('my-backend-ea4o-5f26miis2-shrunkhala345s-projects.vercel.app/api/auth/login', { email, password });
+            const res = await axios.post('https://my-backend-ea4o-5f26miis2-shrunkhala345s-projects.vercel.app/api/auth/login', { email, password });
             localStorage.setItem('user', JSON.stringify(res.data));
             setUser(res.data);
             return res.data;
@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (username, email, password) => {
         try {
-            const res = await axios.post('my-backend-ea4o-5f26miis2-shrunkhala345s-projects.vercel.app/api/auth/register', { username, email, password });
+            const res = await axios.post('https://my-backend-ea4o-5f26miis2-shrunkhala345s-projects.vercel.app/api/auth/register', { username, email, password });
             localStorage.setItem('user', JSON.stringify(res.data));
             setUser(res.data);
             return res.data;
