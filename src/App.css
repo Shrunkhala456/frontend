@@ -341,3 +341,23 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+/* Add these styles to your App.css */
+
+.online-indicator {
+    font-size: 0.8em;
+    color: #28a745; /* Green color for online */
+    margin-left: 5px;
+    font-weight: bold;
+}
+
+.offline-indicator {
+    font-size: 0.8em;
+    color: #6c757d; /* Gray color for offline */
+    margin-left: 5px;
+}
+
+.chat-header-status {
+    font-size: 0.9em;
+    margin-left: 10px;
+    font-weight: normal;
+}
