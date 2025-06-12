@@ -341,23 +341,34 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
-/* Add these styles to your App.css */
-
-.online-indicator {
-    font-size: 0.8em;
-    color: #28a745; /* Green color for online */
-    margin-left: 5px;
-    font-weight: bold;
+/* Add this to your App.css */
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 8px;
+    vertical-align: middle;
 }
 
-.offline-indicator {
-    font-size: 0.8em;
-    color: #6c757d; /* Gray color for offline */
-    margin-left: 5px;
+.status-indicator.online {
+    background-color: #28a745; /* Green */
 }
 
-.chat-header-status {
-    font-size: 0.9em;
-    margin-left: 10px;
-    font-weight: normal;
+.status-indicator.offline {
+    background-color: #6c757d; /* Gray */
+}
+
+/* Make list items use flexbox to align text and status indicator */
+.user-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* To push the status indicator to the right */
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.user-list li:last-child {
+    border-bottom: none;
 }
