@@ -342,33 +342,38 @@ body {
     background: #555;
 }
 /* Add this to your App.css */
+/* src/App.css में जोड़ें */
+
 .status-indicator {
+    display: inline-block;
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    display: inline-block;
     margin-left: 8px;
     vertical-align: middle;
 }
 
 .status-indicator.online {
-    background-color: #28a745; /* Green */
+    background-color: #28a745; /* Green for online */
 }
 
 .status-indicator.offline {
-    background-color: #6c757d; /* Gray */
+    background-color: #6c757d; /* Grey for offline */
 }
 
-/* Make list items use flexbox to align text and status indicator */
-.user-list li {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* To push the status indicator to the right */
+/* मौजूदा logout-button स्टाइल भी यहाँ जोड़ा जा सकता है यदि अभी तक नहीं जोड़ा गया है */
+.logout-button {
+    margin-top: auto; /* Pushes the button to the bottom of the sidebar */
+    background-color: #dc3545; /* Red for logout */
+    color: white;
     padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
     cursor: pointer;
-    border-bottom: 1px solid #eee;
+    transition: background-color 0.3s ease;
 }
 
-.user-list li:last-child {
-    border-bottom: none;
+.logout-button:hover {
+    background-color: #c82333;
 }
