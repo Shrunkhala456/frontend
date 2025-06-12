@@ -1,103 +1,322 @@
-/* client/src/App.css */
+/* General Body and Container */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    padding: 0;
     background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #333;
 }
 
-.App {
+.login-container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 350px;
+    box-sizing: border-box;
+}
+
+.login-container h2 {
+    color: #007bff;
+    margin-bottom: 30px;
+}
+
+.login-container form {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    gap: 15px;
 }
 
-nav {
-    background-color: #075e54;
-    padding: 10px 20px;
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.login-container input[type="text"]:focus,
+.login-container input[type="password"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.login-container button {
+    background-color: #007bff;
     color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+.login-container button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.login-container p {
+    margin-top: 25px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* Chat Application Layout */
+.chat-app {
     display: flex;
-    justify-content: flex-end;
+    width: 90%;
+    max-width: 1200px;
+    height: 85vh;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+/* Sidebar for User List */
+.sidebar {
+    width: 280px;
+    border-right: 1px solid #e0e0e0;
+    padding: 25px;
+    background-color: #f7f9fc;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h3 {
+    margin-top: 0;
+    color: #007bff;
+    font-size: 24px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 15px;
+}
+
+.user-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.user-list li {
+    padding: 15px 12px;
+    margin-bottom: 8px;
+    background-color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.user-list li:hover {
+    background-color: #e9f0f8;
+    transform: translateX(5px);
+}
+
+.user-list li.selected {
+    background-color: #dbeaff;
+    color: #007bff;
+    font-weight: bold;
+    border: 1px solid #007bff;
+}
+
+/* Chat Area */
+.chat-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.chat-header {
+    background-color: #007bff;
+    color: white;
+    padding: 20px 25px;
+    text-align: center;
+    font-size: 22px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.messages-container {
+    flex-grow: 1;
+    padding: 20px 25px;
+    overflow-y: auto;
+    background-color: #e5edf5;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.message-bubble {
+    max-width: 70%;
+    padding: 12px 18px;
+    border-radius: 20px;
+    line-height: 1.4;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.message-bubble.sent {
+    align-self: flex-end;
+    background-color: #007bff;
+    color: white;
+    border-bottom-right-radius: 5px;
+}
+
+.message-bubble.received {
+    align-self: flex-start;
+    background-color: #ffffff;
+    color: #333;
+    border-bottom-left-radius: 5px;
+}
+
+.message-bubble strong {
+    display: block;
+    font-size: 0.9em;
+    margin-bottom: 4px;
+    color: rgba(255, 255, 255, 0.8); /* For sent messages */
+}
+.message-bubble.received strong {
+    color: #007bff; /* For received messages */
+}
+
+.message-bubble p {
+    margin: 0;
+    word-wrap: break-word;
+}
+
+.message-bubble img {
+    border-radius: 8px;
+    margin-top: 8px;
+    display: block;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.message-bubble a {
+    color: inherit;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.timestamp {
+    font-size: 0.75em;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 5px;
+    display: block;
+    text-align: right;
+}
+.message-bubble.received .timestamp {
+    color: #666;
+}
+
+.message-input-form {
+    display: flex;
+    padding: 20px 25px;
+    background-color: #f7f9fc;
+    border-top: 1px solid #e0e0e0;
+    gap: 10px;
     align-items: center;
 }
 
-nav li {
-    margin-left: 20px;
-}
-
-nav a, nav button {
-    color: white;
-    text-decoration: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-    background: none;
-    border: none;
-    cursor: pointer;
+.message-input-form input[type="text"] {
+    flex-grow: 1;
+    padding: 12px 18px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
     font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-nav a:hover, nav button:hover {
-    background-color: #128c7e;
+.message-input-form input[type="text"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
 }
 
-.auth-container {
-    background-color: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    margin: 50px auto;
+.message-input-form input[type="file"] {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.message-input-form label[for="file-upload-button"] {
+    background-color: #28a745;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+.message-input-form label[for="file-upload-button"]:hover {
+    background-color: #218838;
+}
+
+.message-input-form button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.message-input-form button:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+.message-input-form button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.no-chat-selected {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #666;
+    font-size: 1.2em;
     text-align: center;
 }
 
-.auth-container h2 {
-    color: #075e54;
-    margin-bottom: 20px;
+/* Scrollbar Styling (Webkit Browsers) */
+::-webkit-scrollbar {
+    width: 8px;
 }
 
-.auth-container form {
-    display: flex;
-    flex-direction: column;
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
 }
 
-.auth-container input {
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
 }
 
-.auth-container button {
-    background-color: #25d366;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.auth-container button:hover {
-    background-color: #128c7e;
-}
-
-.error-message {
-    color: #e74c3c;
-    margin-top: 10px;
-    font-size: 14px;
-}
-
-.success-message {
-    color: #28a745;
-    margin-top: 10px;
-    font-size: 14px;
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
