@@ -1898,6 +1898,13 @@ console.log('Socket Server URL:', SOCKET_SERVER_URL);
 
 function App() {
     // Initialize currentUser from localStorage, or null if not found
+useEffect(() => {
+  axios.get(`${API_BASE_URL.replace('/api', '')}/ping`)
+    .then((res) => console.log("✅ Backend alive:", res.data))
+    .catch((err) => console.error("❌ Backend dead:", err));
+}, []);
+
+
     const [currentUser, setCurrentUser] = useState(() => {
         try {
             const storedUser = localStorage.getItem('currentUser');
