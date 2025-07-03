@@ -1891,16 +1891,33 @@ import axios from 'axios';
 import io from 'socket.io-client';
 import './App.css'; // For basic styling
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-const SOCKET_SERVER_URL = process.env.REACT_APP_SOCKET_SERVER_URL;    
+const SOCKET_SERVER_URL = process.env.REACT_APP_SOCKET_SERVER_URL;
+
 console.log('API Base URL:', API_BASE_URL);
 console.log('Socket Server URL:', SOCKET_SERVER_URL);
+
+// Add these checks
+if (!API_BASE_URL) {
+    console.error("REACT_APP_API_BASE_URL is not defined! Check your environment variables during build.");
+    // You might want to display an error message to the user or take other action
+    // For now, let's just make sure it doesn't crash:
+    // You could set a default or throw an error for dev purposes.
+    // For production, the build should ideally fail if it's missing.
+}
+if (!SOCKET_SERVER_URL) {
+    console.error("REACT_APP_SOCKET_SERVER_URL is not defined! Check your environment variables during build.");
+}
 
 function App() {
     // Initialize currentUser from localStorage, or null if not found
 useEffect(() => {
-  axios.get(`${API_BASE_URL.replace('/api', '')}/ping`)
-    .then((res) => console.log("✅ Backend alive:", res.data))
-    .catch((err) => console.error("❌ Backend dead:", err));
+  if (API_BASE_URL) { // Add this check
+    axios.get(`${API_BASE_URL.replace('/api', '')}/ping`)
+      .then((res) => console.log("✅ Backend alive:", res.data))
+      .catch((err) => console.error("❌ Backend dead:", err));
+  } else {
+    console.error("Cannot ping backend: API_BASE_URL is undefined.");
+  }
 }, []);
 
 
